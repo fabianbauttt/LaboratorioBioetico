@@ -43,6 +43,7 @@ body {
   cursor: default;
 }
 
+/* Scanline overlay */
 body::before {
   content: '';
   position: fixed;
@@ -58,7 +59,9 @@ body::before {
   z-index: 9999;
 }
 
-/* Screens */
+/* ============================================
+   PANTALLAS (screens)
+   ============================================ */
 .screen {
   display: none;
   min-height: 100vh;
@@ -71,7 +74,9 @@ body::before {
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* Bienvenido */
+/* ============================================
+   PANTALLA DE BIENVENIDA
+   ============================================ */
 #screen-welcome {
   flex-direction: column;
   align-items: center;
@@ -178,7 +183,9 @@ body::before {
   text-shadow: 0 0 15px rgba(255,170,0,0.5);
 }
 
-/* Botones */
+/* ============================================
+   BOTONES
+   ============================================ */
 .btn {
   font-family: var(--font-display);
   font-size: 0.85rem;
@@ -193,17 +200,58 @@ body::before {
   background: transparent;
 }
 
-.btn-cyan { color: var(--accent-cyan); border-color: var(--accent-cyan); }
-.btn-cyan:hover { background: rgba(0,212,255,0.15); box-shadow: var(--glow-cyan); transform: translateY(-2px); }
-.btn-green { color: var(--accent-green); border-color: var(--accent-green); }
-.btn-green:hover { background: rgba(0,255,136,0.15); box-shadow: var(--glow-green); transform: translateY(-2px); }
-.btn-red { color: var(--accent-red); border-color: var(--accent-red); }
-.btn-red:hover { background: rgba(255,51,102,0.15); box-shadow: var(--glow-red); transform: translateY(-2px); }
-.btn-amber { color: var(--accent-amber); border-color: var(--accent-amber); font-size: 0.75rem; padding: 0.5rem 1.2rem; letter-spacing: 2px; }
-.btn-amber:hover { background: rgba(255,170,0,0.1); box-shadow: 0 0 15px rgba(255,170,0,0.4); }
-.btn:disabled { opacity: 0.3; cursor: not-allowed; transform: none; box-shadow: none; }
+.btn-cyan {
+  color: var(--accent-cyan);
+  border-color: var(--accent-cyan);
+}
+.btn-cyan:hover {
+  background: rgba(0,212,255,0.15);
+  box-shadow: var(--glow-cyan);
+  transform: translateY(-2px);
+}
 
-/* Layout de Salas */
+.btn-green {
+  color: var(--accent-green);
+  border-color: var(--accent-green);
+}
+.btn-green:hover {
+  background: rgba(0,255,136,0.15);
+  box-shadow: var(--glow-green);
+  transform: translateY(-2px);
+}
+
+.btn-red {
+  color: var(--accent-red);
+  border-color: var(--accent-red);
+}
+.btn-red:hover {
+  background: rgba(255,51,102,0.15);
+  box-shadow: var(--glow-red);
+  transform: translateY(-2px);
+}
+
+.btn-amber {
+  color: var(--accent-amber);
+  border-color: var(--accent-amber);
+  font-size: 0.75rem;
+  padding: 0.5rem 1.2rem;
+  letter-spacing: 2px;
+}
+.btn-amber:hover {
+  background: rgba(255,170,0,0.1);
+  box-shadow: 0 0 15px rgba(255,170,0,0.4);
+}
+
+.btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* ============================================
+   LAYOUT DE SALAS
+   ============================================ */
 .room-screen {
   flex-direction: column;
   align-items: center;
@@ -221,10 +269,37 @@ body::before {
   gap: 0.5rem;
 }
 
-.room-id { font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-green); letter-spacing: 2px; }
-.room-timer-live { font-family: var(--font-display); font-size: 1.1rem; color: var(--accent-amber); letter-spacing: 3px; }
-.room-title { font-family: var(--font-display); font-size: clamp(1.2rem, 3vw, 1.8rem); color: var(--accent-cyan); text-align: center; margin-bottom: 0.3rem; text-shadow: var(--glow-cyan); }
-.room-principle { font-family: var(--font-mono); font-size: 0.8rem; color: var(--accent-green); letter-spacing: 2px; text-align: center; margin-bottom: 1.5rem; }
+.room-id {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--accent-green);
+  letter-spacing: 2px;
+}
+
+.room-timer-live {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  color: var(--accent-amber);
+  letter-spacing: 3px;
+}
+
+.room-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.2rem, 3vw, 1.8rem);
+  color: var(--accent-cyan);
+  text-align: center;
+  margin-bottom: 0.3rem;
+  text-shadow: var(--glow-cyan);
+}
+
+.room-principle {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--accent-green);
+  letter-spacing: 2px;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
 
 .case-card {
   background: var(--bg-card);
@@ -237,8 +312,19 @@ body::before {
   margin-bottom: 1.5rem;
 }
 
-.case-card h3 { font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); letter-spacing: 3px; margin-bottom: 0.8rem; }
-.case-card p { font-size: 0.95rem; line-height: 1.7; color: var(--text-secondary); }
+.case-card h3 {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  letter-spacing: 3px;
+  margin-bottom: 0.8rem;
+}
+
+.case-card p {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--text-secondary);
+}
 
 .challenge-panel {
   background: var(--bg-panel);
@@ -260,7 +346,9 @@ body::before {
   border-bottom: 1px solid rgba(0,212,255,0.15);
 }
 
-/* Sala 1 Items */
+/* ============================================
+   SALA 1 — Clasificación de frases
+   ============================================ */
 .phrase-item {
   display: flex;
   align-items: flex-start;
@@ -273,8 +361,20 @@ body::before {
   transition: border-color 0.2s;
 }
 
-.phrase-text { flex: 1; font-size: 0.9rem; color: var(--text-primary); line-height: 1.5; font-family: var(--font-mono); }
-.phrase-btns { display: flex; flex-direction: column; gap: 0.4rem; min-width: 140px; }
+.phrase-text {
+  flex: 1;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  line-height: 1.5;
+  font-family: var(--font-mono);
+}
+
+.phrase-btns {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  min-width: 140px;
+}
 
 .phrase-btn {
   font-family: var(--font-mono);
@@ -288,101 +388,540 @@ body::before {
   transition: all 0.15s;
 }
 
-.phrase-btn.fact { color: var(--accent-cyan); border-color: rgba(0,212,255,0.4); }
-.phrase-btn.fact:hover, .phrase-btn.fact.selected { background: rgba(0,212,255,0.2); border-color: var(--accent-cyan); box-shadow: 0 0 8px rgba(0,212,255,0.4); }
-.phrase-btn.value { color: var(--accent-amber); border-color: rgba(255,170,0,0.4); }
-.phrase-btn.value:hover, .phrase-btn.value.selected { background: rgba(255,170,0,0.15); border-color: var(--accent-amber); box-shadow: 0 0 8px rgba(255,170,0,0.4); }
+.phrase-btn.fact {
+  color: var(--accent-cyan);
+  border-color: rgba(0,212,255,0.4);
+}
+.phrase-btn.fact:hover,
+.phrase-btn.fact.selected {
+  background: rgba(0,212,255,0.2);
+  border-color: var(--accent-cyan);
+  box-shadow: 0 0 8px rgba(0,212,255,0.4);
+}
+
+.phrase-btn.value {
+  color: var(--accent-amber);
+  border-color: rgba(255,170,0,0.4);
+}
+.phrase-btn.value:hover,
+.phrase-btn.value.selected {
+  background: rgba(255,170,0,0.15);
+  border-color: var(--accent-amber);
+  box-shadow: 0 0 8px rgba(255,170,0,0.4);
+}
 
 .phrase-item.correct { border-color: var(--accent-green); background: rgba(0,255,136,0.04); }
 .phrase-item.wrong   { border-color: var(--accent-red);   background: rgba(255,51,102,0.04); }
 
-/* Sala 2 Opciones */
+/* ============================================
+   SALA 2 — Opciones múltiples
+   ============================================ */
 .option-list { list-style: none; }
-.option-item { display: flex; align-items: flex-start; gap: 1rem; padding: 1rem; margin-bottom: 0.7rem; border: 1px solid rgba(0,212,255,0.15); border-radius: 6px; cursor: pointer; transition: all 0.2s; background: rgba(0,212,255,0.02); }
-.option-item:hover { border-color: rgba(0,212,255,0.4); background: rgba(0,212,255,0.06); }
-.option-item.selected { border-color: var(--accent-cyan); background: rgba(0,212,255,0.1); }
-.option-letter { font-family: var(--font-display); font-size: 0.8rem; color: var(--accent-cyan); min-width: 24px; margin-top: 2px; }
-.option-text { font-size: 0.9rem; line-height: 1.6; color: var(--text-secondary); }
 
-.cipher-section { margin-top: 1.2rem; padding-top: 1.2rem; border-top: 1px solid rgba(0,212,255,0.15); }
-.cipher-label { font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 0.8rem; line-height: 1.6; }
-.cipher-word-display { font-family: var(--font-display); font-size: 1.5rem; color: var(--accent-amber); letter-spacing: 8px; text-align: center; margin: 0.8rem 0; text-shadow: 0 0 15px rgba(255,170,0,0.4); }
+.option-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1rem;
+  margin-bottom: 0.7rem;
+  border: 1px solid rgba(0,212,255,0.15);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: rgba(0,212,255,0.02);
+}
 
-.code-input-row { display: flex; gap: 0.7rem; align-items: center; flex-wrap: wrap; }
-.code-input { background: var(--bg-deep); border: 1px solid var(--accent-cyan); color: var(--accent-cyan); font-family: var(--font-display); font-size: 1.1rem; letter-spacing: 4px; padding: 0.6rem 1rem; border-radius: 4px; width: 180px; text-transform: uppercase; outline: none; text-align: center; }
-.code-input:focus { box-shadow: var(--glow-cyan); }
-.code-input.correct-input { border-color: var(--accent-green); color: var(--accent-green); box-shadow: var(--glow-green); }
-.code-input.wrong-input { border-color: var(--accent-red); color: var(--accent-red); box-shadow: var(--glow-red); }
+.option-item:hover {
+  border-color: rgba(0,212,255,0.4);
+  background: rgba(0,212,255,0.06);
+}
 
-/* Sala 3 Argumentos */
-.arguments-grid { display: grid; gap: 0.8rem; }
-.argument-item { display: flex; align-items: flex-start; gap: 0.8rem; padding: 1rem; border: 1px solid rgba(0,212,255,0.15); border-radius: 6px; cursor: pointer; transition: all 0.2s; background: rgba(0,212,255,0.02); }
-.argument-item:hover { border-color: rgba(0,212,255,0.4); background: rgba(0,212,255,0.06); }
-.argument-item.selected { border-color: var(--accent-cyan); background: rgba(0,212,255,0.1); }
-.arg-num { font-family: var(--font-display); font-size: 0.75rem; color: var(--accent-cyan); min-width: 20px; margin-top: 2px; }
-.arg-text { font-size: 0.88rem; line-height: 1.6; color: var(--text-secondary); }
+.option-item.selected {
+  border-color: var(--accent-cyan);
+  background: rgba(0,212,255,0.1);
+}
 
-.keyword-section { margin-top: 1.2rem; padding-top: 1.2rem; border-top: 1px solid rgba(0,212,255,0.15); }
-.keyword-clue { font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent-amber); line-height: 1.7; margin-bottom: 1rem; padding: 1rem; border: 1px solid rgba(255,170,0,0.25); border-radius: 4px; background: rgba(255,170,0,0.04); text-align: center; }
+.option-letter {
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  color: var(--accent-cyan);
+  min-width: 24px;
+  margin-top: 2px;
+}
 
-/* Alertas */
-.feedback-box { max-width: 800px; width: 100%; padding: 1rem 1.2rem; border-radius: 6px; font-family: var(--font-mono); font-size: 0.82rem; line-height: 1.6; margin-bottom: 1rem; display: none; animation: fadeIn 0.3s ease; }
-.feedback-box.error { display: block; border: 1px solid var(--accent-red); background: rgba(255,51,102,0.08); color: #ff8099; }
-.feedback-box.success { display: block; border: 1px solid var(--accent-green); background: rgba(0,255,136,0.08); color: var(--accent-green); }
-.feedback-box.info { display: block; border: 1px solid var(--accent-amber); background: rgba(255,170,0,0.08); color: var(--accent-amber); }
+.option-text {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+/* Caesar cipher input */
+.cipher-section {
+  margin-top: 1.2rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid rgba(0,212,255,0.15);
+}
+
+.cipher-label {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.8rem;
+  line-height: 1.6;
+}
+
+.cipher-word-display {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  color: var(--accent-amber);
+  letter-spacing: 8px;
+  text-align: center;
+  margin: 0.8rem 0;
+  text-shadow: 0 0 15px rgba(255,170,0,0.4);
+}
+
+.code-input-row {
+  display: flex;
+  gap: 0.7rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.code-input {
+  background: var(--bg-deep);
+  border: 1px solid var(--accent-cyan);
+  color: var(--accent-cyan);
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  letter-spacing: 4px;
+  padding: 0.6rem 1rem;
+  border-radius: 4px;
+  width: 180px;
+  text-transform: uppercase;
+  outline: none;
+  text-align: center;
+}
+
+.code-input:focus {
+  box-shadow: var(--glow-cyan);
+}
+
+.code-input.correct-input {
+  border-color: var(--accent-green);
+  color: var(--accent-green);
+  box-shadow: var(--glow-green);
+}
+
+.code-input.wrong-input {
+  border-color: var(--accent-red);
+  color: var(--accent-red);
+  box-shadow: var(--glow-red);
+}
+
+/* ============================================
+   SALA 3 — Balanza de Justicia
+   ============================================ */
+.arguments-grid {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.argument-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.8rem;
+  padding: 1rem;
+  border: 1px solid rgba(0,212,255,0.15);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: rgba(0,212,255,0.02);
+}
+
+.argument-item:hover {
+  border-color: rgba(0,212,255,0.4);
+  background: rgba(0,212,255,0.06);
+}
+
+.argument-item.selected {
+  border-color: var(--accent-cyan);
+  background: rgba(0,212,255,0.1);
+}
+
+.arg-num {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  color: var(--accent-cyan);
+  min-width: 20px;
+  margin-top: 2px;
+}
+
+.arg-text {
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+/* Final keyword input */
+.keyword-section {
+  margin-top: 1.2rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid rgba(0,212,255,0.15);
+}
+
+.keyword-clue {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--accent-amber);
+  line-height: 1.7;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border: 1px solid rgba(255,170,0,0.25);
+  border-radius: 4px;
+  background: rgba(255,170,0,0.04);
+  text-align: center;
+}
+
+/* ============================================
+   FEEDBACK Y ALERTAS
+   ============================================ */
+.feedback-box {
+  max-width: 800px;
+  width: 100%;
+  padding: 1rem 1.2rem;
+  border-radius: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+  display: none;
+  animation: fadeIn 0.3s ease;
+}
+
+.feedback-box.error {
+  display: block;
+  border: 1px solid var(--accent-red);
+  background: rgba(255,51,102,0.08);
+  color: #ff8099;
+}
+
+.feedback-box.success {
+  display: block;
+  border: 1px solid var(--accent-green);
+  background: rgba(0,255,136,0.08);
+  color: var(--accent-green);
+}
+
+.feedback-box.info {
+  display: block;
+  border: 1px solid var(--accent-amber);
+  background: rgba(255,170,0,0.08);
+  color: var(--accent-amber);
+}
+
 .feedback-icon { font-size: 1rem; margin-right: 0.5rem; }
 
-.code-reveal { background: var(--bg-deep); border: 2px solid var(--accent-green); border-radius: 8px; padding: 1.5rem; text-align: center; margin-bottom: 1rem; box-shadow: var(--glow-green); display: none; animation: fadeIn 0.5s ease; }
+/* Code reveal */
+.code-reveal {
+  background: var(--bg-deep);
+  border: 2px solid var(--accent-green);
+  border-radius: 8px;
+  padding: 1.5rem;
+  text-align: center;
+  margin-bottom: 1rem;
+  box-shadow: var(--glow-green);
+  display: none;
+  animation: fadeIn 0.5s ease;
+}
+
 .code-reveal.visible { display: block; }
-.code-reveal-label { font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-muted); letter-spacing: 3px; margin-bottom: 0.5rem; }
-.code-reveal-number { font-family: var(--font-display); font-size: 2.5rem; color: var(--accent-green); letter-spacing: 12px; text-shadow: var(--glow-green); }
 
-/* Éxito */
-#screen-success { flex-direction: column; align-items: center; justify-content: center; padding: 2rem; text-align: center; }
-.success-badge { font-family: var(--font-mono); font-size: 0.7rem; color: var(--accent-green); border: 1px solid var(--accent-green); padding: 0.3rem 1rem; letter-spacing: 3px; margin-bottom: 1.5rem; animation: pulse 2s infinite; }
-.success-title { font-family: var(--font-display); font-size: clamp(1.8rem, 5vw, 3rem); color: var(--accent-green); text-shadow: var(--glow-green); margin-bottom: 0.5rem; }
-.success-subtitle { font-family: var(--font-mono); color: var(--text-secondary); margin-bottom: 2rem; font-size: 0.9rem; letter-spacing: 1px; }
-.success-card { background: var(--bg-card); border: 1px solid var(--accent-green); border-radius: 8px; padding: 2rem; max-width: 640px; width: 100%; box-shadow: var(--glow-green); margin-bottom: 1.5rem; }
-.success-card p { font-size: 0.95rem; line-height: 1.8; color: var(--text-secondary); margin-bottom: 1rem; }
-.stats-row { display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; margin-top: 1.2rem; }
-.stat-box { text-align: center; }
-.stat-value { font-family: var(--font-display); font-size: 1.8rem; color: var(--accent-cyan); display: block; }
-.stat-label { font-family: var(--font-mono); font-size: 0.68rem; color: var(--text-muted); letter-spacing: 2px; }
+.code-reveal-label {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  letter-spacing: 3px;
+  margin-bottom: 0.5rem;
+}
 
-/* Panel Docente Modal */
-.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(5,13,20,0.92); z-index: 1000; align-items: center; justify-content: center; padding: 1rem; }
-.modal-overlay.open { display: flex; animation: fadeIn 0.3s ease; }
-.modal-box { background: var(--bg-panel); border: 1px solid var(--accent-amber); border-radius: 10px; padding: 2rem; max-width: 720px; width: 100%; max-height: 85vh; overflow-y: auto; box-shadow: 0 0 40px rgba(255,170,0,0.2); position: relative; }
-.modal-box h2 { font-family: var(--font-display); font-size: 1.2rem; color: var(--accent-amber); letter-spacing: 3px; margin-bottom: 1.5rem; padding-bottom: 0.8rem; border-bottom: 1px solid rgba(255,170,0,0.25); }
-.modal-close { position: absolute; top: 1rem; right: 1.2rem; background: none; border: none; color: var(--text-muted); font-size: 1.3rem; cursor: pointer; font-family: var(--font-mono); }
+.code-reveal-number {
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  color: var(--accent-green);
+  letter-spacing: 12px;
+  text-shadow: var(--glow-green);
+}
+
+/* ============================================
+   PANTALLA DE ÉXITO
+   ============================================ */
+#screen-success {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  text-align: center;
+}
+
+.success-badge {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--accent-green);
+  border: 1px solid var(--accent-green);
+  padding: 0.3rem 1rem;
+  letter-spacing: 3px;
+  margin-bottom: 1.5rem;
+  animation: pulse 2s infinite;
+}
+
+.success-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 5vw, 3rem);
+  color: var(--accent-green);
+  text-shadow: var(--glow-green);
+  margin-bottom: 0.5rem;
+}
+
+.success-subtitle {
+  font-family: var(--font-mono);
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+}
+
+.success-card {
+  background: var(--bg-card);
+  border: 1px solid var(--accent-green);
+  border-radius: 8px;
+  padding: 2rem;
+  max-width: 640px;
+  width: 100%;
+  box-shadow: var(--glow-green);
+  margin-bottom: 1.5rem;
+}
+
+.success-card p {
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+}
+
+.stats-row {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+  margin-top: 1.2rem;
+}
+
+.stat-box {
+  text-align: center;
+}
+
+.stat-value {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  color: var(--accent-cyan);
+  display: block;
+}
+
+.stat-box {
+  text-align: center;
+}
+
+.stat-value {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  color: var(--accent-cyan);
+  display: block;
+}
+
+.stat-label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  letter-spacing: 2px;
+}
+
+/* ============================================
+   MODAL — PANEL DOCENTE
+   ============================================ */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(5,13,20,0.92);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.modal-overlay.open {
+  display: flex;
+  animation: fadeIn 0.3s ease;
+}
+
+.modal-box {
+  background: var(--bg-panel);
+  border: 1px solid var(--accent-amber);
+  border-radius: 10px;
+  padding: 2rem;
+  max-width: 720px;
+  width: 100%;
+  max-height: 85vh;
+  overflow-y: auto;
+  box-shadow: 0 0 40px rgba(255,170,0,0.2);
+  position: relative;
+}
+
+.modal-box h2 {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  color: var(--accent-amber);
+  letter-spacing: 3px;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.8rem;
+  border-bottom: 1px solid rgba(255,170,0,0.25);
+}
+
+.modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1.2rem;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.3rem;
+  cursor: pointer;
+  font-family: var(--font-mono);
+}
 .modal-close:hover { color: var(--accent-red); }
-.modal-section { margin-bottom: 1.5rem; }
-.modal-section h3 { font-family: var(--font-display); font-size: 0.8rem; color: var(--accent-cyan); letter-spacing: 2px; margin-bottom: 0.8rem; text-transform: uppercase; }
-.modal-section p, .modal-section li { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.7; margin-bottom: 0.5rem; }
+
+.modal-section {
+  margin-bottom: 1.5rem;
+}
+
+.modal-section h3 {
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  color: var(--accent-cyan);
+  letter-spacing: 2px;
+  margin-bottom: 0.8rem;
+  text-transform: uppercase;
+}
+
+.modal-section p, .modal-section li {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: 0.5rem;
+}
+
 .modal-section ul { list-style: disc; padding-left: 1.2rem; }
-.answer-key { background: var(--bg-deep); border: 1px solid rgba(0,212,255,0.2); border-radius: 6px; padding: 1rem; font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-secondary); line-height: 1.8; }
+
+.answer-key {
+  background: var(--bg-deep);
+  border: 1px solid rgba(0,212,255,0.2);
+  border-radius: 6px;
+  padding: 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  line-height: 1.8;
+}
+
 .answer-key strong { color: var(--accent-green); }
-.answer-key em { color: var(--accent-red); font-style: normal; }
+.answer-key em    { color: var(--accent-red); font-style: normal; }
 
-.lock-screen { text-align: center; padding: 1rem 0; }
-.lock-screen .lock-icon-big { font-size: 3rem; margin-bottom: 1rem; }
-.lock-screen p { font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.2rem; }
-.pin-input { background: var(--bg-deep); border: 1px solid var(--accent-amber); color: var(--accent-amber); font-family: var(--font-display); font-size: 1.5rem; letter-spacing: 8px; padding: 0.6rem 1.2rem; border-radius: 4px; width: 160px; text-align: center; outline: none; margin-bottom: 1rem; }
+/* Lock screen for teacher panel */
+.lock-screen {
+  text-align: center;
+  padding: 1rem 0;
+}
+
+.lock-screen .lock-icon-big {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.lock-screen p {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-bottom: 1.2rem;
+}
+
+.pin-input {
+  background: var(--bg-deep);
+  border: 1px solid var(--accent-amber);
+  color: var(--accent-amber);
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  letter-spacing: 8px;
+  padding: 0.6rem 1.2rem;
+  border-radius: 4px;
+  width: 160px;
+  text-align: center;
+  outline: none;
+  margin-bottom: 1rem;
+}
+
 .pin-input:focus { box-shadow: 0 0 15px rgba(255,170,0,0.4); }
-.pin-error { font-family: var(--font-mono); font-size: 0.78rem; color: var(--accent-red); display: none; margin-bottom: 0.5rem; }
 
-.teacher-btn-fixed { position: fixed; bottom: 1.2rem; right: 1.2rem; z-index: 500; }
+.pin-error {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--accent-red);
+  display: none;
+  margin-bottom: 0.5rem;
+}
 
-.progress-nav { display: flex; gap: 0.5rem; align-items: center; justify-content: center; margin-bottom: 1.5rem; }
-.progress-dot { width: 10px; height: 10px; border-radius: 50%; border: 1px solid var(--text-muted); background: transparent; transition: all 0.3s; }
-.progress-dot.done { background: var(--accent-green); border-color: var(--accent-green); box-shadow: var(--glow-green); }
-.progress-dot.active{ background: var(--accent-cyan); border-color: var(--accent-cyan); box-shadow: var(--glow-cyan); }
+/* ============================================
+   TEACHER BUTTON (fixed corner)
+   ============================================ */
+.teacher-btn-fixed {
+  position: fixed;
+  bottom: 1.2rem;
+  right: 1.2rem;
+  z-index: 500;
+}
 
+/* ============================================
+   PROGRESS DOTS
+   ============================================ */
+.progress-nav {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.progress-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1px solid var(--text-muted);
+  background: transparent;
+  transition: all 0.3s;
+}
+.progress-dot.done  { background: var(--accent-green); border-color: var(--accent-green); box-shadow: var(--glow-green); }
+.progress-dot.active{ background: var(--accent-cyan);  border-color: var(--accent-cyan);  box-shadow: var(--glow-cyan); }
+
+/* ============================================
+   SEPARATOR
+   ============================================ */
 .sep { border: none; border-top: 1px solid rgba(0,212,255,0.1); margin: 1rem 0; }
+
+/* Scrollbar */
 ::-webkit-scrollbar { width: 5px; }
 ::-webkit-scrollbar-track { background: var(--bg-deep); }
 ::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: 3px; }
 
+/* Responsive */
 @media (max-width: 600px) {
   .phrase-item { flex-direction: column; }
   .phrase-btns { flex-direction: row; min-width: auto; }
@@ -416,7 +955,7 @@ body::before {
     </p>
     <ul class="mission-list" id="welcome-mission-list">
       <li class="unlocked"><span class="lock-icon">🔓</span><span class="room-name">MISIÓN 01 — El Dilema Neuralink</span></li>
-      <li id="ml-2"><span class="lock-icon" id="ml-2-icon">🔒</span><span class="room-name">MISIÓN 02 — El Filtro CRISPR</span></li>
+      <li id="ml-2"><span class="lock-icon" id="ml-2-icon">🔒</span><span class="room-name">MISIÓN 02 — El Filtro Genético</span></li>
       <li id="ml-3"><span class="lock-icon" id="ml-3-icon">🔒</span><span class="room-name">MISIÓN 03 — La Balanza de Zolgensma</span></li>
     </ul>
   </div>
@@ -537,11 +1076,11 @@ body::before {
 
 <div id="screen-room2" class="screen room-screen">
   <div class="room-header">
-    <span class="room-id">SALA-02 / CRISPR</span>
+    <span class="room-id">SALA-02 / GÉNETICO</span>
     <span class="room-timer-live" id="timer-r2">⏱ 00:00:00</span>
   </div>
 
-  <h2 class="room-title">🧬 EL FILTRO CRISPR</h2>
+  <h2 class="room-title">🧬 EL FILTRO GÉNETICO</h2>
   <p class="room-principle">// PRINCIPIO: NO MALEFICENCIA //</p>
 
   <div class="progress-nav">
@@ -603,7 +1142,7 @@ body::before {
     <div class="cipher-section" id="cipher-section-r2" style="display:none">
       <p class="cipher-label">
         ✅ <strong style="color:var(--accent-green)">FILTRO ESTABILIZADO.</strong> Has aplicado correctamente el principio de No Maleficencia.
-        El sistema te entrega la palabra clave:<br><br>
+        El sistema te entrega la palabra clave: <br><br>
         <strong style="color:var(--accent-amber)">Esta palabra ha sido cifrada con el Código César (desplazamiento = 3).</strong><br>
         En el Código César, cada letra se desplaza 3 posiciones hacia atrás en el alfabeto.
         Por ejemplo: <code>F → C</code>, <code>U → R</code>. Descifra la palabra y escríbela para abrir la puerta.
@@ -633,7 +1172,7 @@ body::before {
     ▶ VERIFICAR OPCIÓN
   </button>
   <button class="btn btn-green" id="btn-advance-r2" style="display:none" onclick="goToRoom(3)">
-    ▶▶ ACCEDER A SALA 03
+    ▶▶ ACCEDER A SALA 02
   </button>
 </div>
 
@@ -677,7 +1216,7 @@ body::before {
           Debe priorizarse el bebé cuya familia pueda cofinanciar parte del tratamiento,
           ya que eso garantiza sostenibilidad del sistema de salud y maximiza el retorno social de la inversión.
         </span>
-      </li>
+      </div>
 
       <div class="argument-item" data-correct="true" onclick="selectArg3(this,'B')">
         <span class="arg-num">B</span>
@@ -700,7 +1239,7 @@ body::before {
         <span class="arg-num">D</span>
         <span class="arg-text">
           Ningún criterio puede ser éticamente superior a otro, por lo que debe decidirse mediante
-          sorto aleatorio para garantizar la imparcialidad absoluta del proceso.
+          sorteo aleatorio para garantizar la imparcialidad absoluta del proceso.
         </span>
       </div>
     </div>
@@ -808,7 +1347,7 @@ body::before {
 
           <strong>SALA 3 — Zolgensma (Argumento + Keyword):</strong><br>
           Argumento correcto: <strong>B</strong> — Criterio clínico objetivo e igualitario.<br>
-          Palabra clave final oculta: <strong>Núremberg</strong> (Se infiere buscando "1947 Bioética")
+          Palabra clave final oculta: <strong>領remberg</strong> (Se infiere buscando "1947 Bioética")
         </div>
       </div>
     </div>
@@ -1012,7 +1551,7 @@ function validateCipher() {
   }
 }
 
-// SALA 3 (Modificada sin pistas del nombre de la ciudad)
+// SALA 3 
 function selectArg3(el, letter) {
   document.querySelectorAll('#args-r3 .argument-item').forEach(a => a.classList.remove('selected'));
   el.classList.add('selected');
@@ -1037,7 +1576,7 @@ function validateRoom3() {
 
 function validateKeyword() {
   const raw = document.getElementById('keyword-answer-r3').value.trim();
-  const correct = ['Núremberg', 'Nuremberg', 'NÚREMBERG', 'NUREMBERG', 'núremberg', 'nuremberg'];
+  const correct = ['Núremberg', 'NÚREMBERG', 'núremberg'];
   
   if (correct.some(c => c.toLowerCase() === raw.toLowerCase())) {
     document.getElementById('keyword-answer-r3').className = 'code-input correct-input';
