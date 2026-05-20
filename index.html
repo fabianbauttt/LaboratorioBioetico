@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Laboratorio Bioético: Tres Dilemas</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Exo+2:wght@300;400;600;700;900&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+/* ============================================
+   VARIABLES Y RESET GLOBAL
+   ============================================ */
+:root {
+  --bg-deep: #050d14;
+  --bg-panel: #091520;
+  --bg-card: #0d1e2e;
+  --border-cyan: #00d4ff;
+  --border-green: #00ff88;
+  --border-red: #ff3366;
+  --border-amber: #ffaa00;
+  --text-primary: #e0f4ff;
+  --text-secondary: #7ab8d4;
+  --text-muted: #3a6070;
+  --accent-cyan: #00d4ff;
+  --accent-green: #00ff88;
+  --accent-red: #ff3366;
+  --accent-amber: #ffaa00;
+  --glow-cyan: 0 0 20px rgba(0,212,255,0.5);
+  --glow-green: 0 0 20px rgba(0,255,136,0.5);
+  --glow-red: 0 0 20px rgba(255,51,102,0.5);
+  --font-display: 'Orbitron', monospace;
+  --font-body: 'Exo 2', sans-serif;
+  --font-mono: 'Share Tech Mono', monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  min-height: 100vh;
+  overflow-x: hidden;
+  cursor: default;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,212,255,0.015) 2px,
+    rgba(0,212,255,0.015) 4px
+  );
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* Screens */
+.screen {
+  display: none;
+  min-height: 100vh;
+  animation: fadeIn 0.6s ease;
+}
+.screen.active { display: flex; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Bienvenido */
+#screen-welcome {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  position: relative;
+  text-align: center;
+}
+
+.grid-bg {
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0,212,255,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,212,255,0.06) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+}
+
+.welcome-badge {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--accent-green);
+  border: 1px solid var(--accent-green);
+  padding: 0.3rem 1rem;
+  border-radius: 2px;
+  margin-bottom: 1.5rem;
+  letter-spacing: 3px;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; box-shadow: var(--glow-green); }
+  50%       { opacity: 0.6; box-shadow: none; }
+}
+
+.welcome-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 5vw, 3.5rem);
+  font-weight: 900;
+  line-height: 1.1;
+  color: var(--accent-cyan);
+  text-shadow: var(--glow-cyan);
+  margin-bottom: 0.5rem;
+  letter-spacing: 2px;
+}
+
+.welcome-subtitle {
+  font-family: var(--font-display);
+  font-size: clamp(0.9rem, 2vw, 1.2rem);
+  color: var(--text-secondary);
+  letter-spacing: 4px;
+  margin-bottom: 2.5rem;
+}
+
+.welcome-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-cyan);
+  border-radius: 8px;
+  padding: 2rem 2.5rem;
+  max-width: 680px;
+  width: 100%;
+  box-shadow: var(--glow-cyan), inset 0 0 40px rgba(0,212,255,0.03);
+  margin-bottom: 2rem;
+}
+
+.welcome-card p {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+}
+
+.welcome-card p strong {
+  color: var(--accent-cyan);
+  font-family: var(--font-mono);
+}
+
+.mission-list {
+  list-style: none;
+  text-align: left;
+  margin-top: 1rem;
+}
+.mission-list li {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  padding: 0.4rem 0;
+  border-bottom: 1px solid rgba(0,212,255,0.1);
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+.mission-list li .lock-icon { color: var(--accent-red); font-size: 1rem; }
+.mission-list li.unlocked .lock-icon { color: var(--accent-green); }
+.mission-list li span.room-name { color: var(--text-primary); }
+
+.timer-display {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  color: var(--accent-amber);
+  letter-spacing: 4px;
+  margin-bottom: 1.5rem;
+  text-shadow: 0 0 15px rgba(255,170,0,0.5);
+}
+
+/* Botones */
+.btn {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  padding: 0.85rem 2.5rem;
+  border: 2px solid;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-transform: uppercase;
+  background: transparent;
+}
+
+.btn-cyan { color: var(--accent-cyan); border-color: var(--accent-cyan); }
+.btn-cyan:hover { background: rgba(0,212,255,0.15); box-shadow: var(--glow-cyan); transform: translateY(-2px); }
+.btn-green { color: var(--accent-green); border-color: var(--accent-green); }
+.btn-green:hover { background: rgba(0,255,136,0.15); box-shadow: var(--glow-green); transform: translateY(-2px); }
+.btn-red { color: var(--accent-red); border-color: var(--accent-red); }
+.btn-red:hover { background: rgba(255,51,102,0.15); box-shadow: var(--glow-red); transform: translateY(-2px); }
+.btn-amber { color: var(--accent-amber); border-color: var(--accent-amber); font-size: 0.75rem; padding: 0.5rem 1.2rem; letter-spacing: 2px; }
+.btn-amber:hover { background: rgba(255,170,0,0.1); box-shadow: 0 0 15px rgba(255,170,0,0.4); }
+.btn:disabled { opacity: 0.3; cursor: not-allowed; transform: none; box-shadow: none; }
+
+/* Layout de Salas */
+.room-screen {
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem 1.5rem;
+}
+
+.room-header {
+  width: 100%;
+  max-width: 800px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.room-id { font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-green); letter-spacing: 2px; }
+.room-timer-live { font-family: var(--font-display); font-size: 1.1rem; color: var(--accent-amber); letter-spacing: 3px; }
+.room-title { font-family: var(--font-display); font-size: clamp(1.2rem, 3vw, 1.8rem); color: var(--accent-cyan); text-align: center; margin-bottom: 0.3rem; text-shadow: var(--glow-cyan); }
+.room-principle { font-family: var(--font-mono); font-size: 0.8rem; color: var(--accent-green); letter-spacing: 2px; text-align: center; margin-bottom: 1.5rem; }
+
+.case-card {
+  background: var(--bg-card);
+  border: 1px solid rgba(0,212,255,0.3);
+  border-left: 3px solid var(--accent-cyan);
+  border-radius: 6px;
+  padding: 1.5rem;
+  max-width: 800px;
+  width: 100%;
+  margin-bottom: 1.5rem;
+}
+
+.case-card h3 { font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); letter-spacing: 3px; margin-bottom: 0.8rem; }
+.case-card p { font-size: 0.95rem; line-height: 1.7; color: var(--text-secondary); }
+
+.challenge-panel {
+  background: var(--bg-panel);
+  border: 1px solid rgba(0,212,255,0.2);
+  border-radius: 8px;
+  padding: 1.5rem;
+  max-width: 800px;
+  width: 100%;
+  margin-bottom: 1.5rem;
+}
+
+.challenge-panel h3 {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  letter-spacing: 2px;
+  margin-bottom: 1.2rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid rgba(0,212,255,0.15);
+}
+
+/* Sala 1 Items */
+.phrase-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 0.8rem;
+  margin-bottom: 0.8rem;
+  background: rgba(0,212,255,0.03);
+  border: 1px solid rgba(0,212,255,0.12);
+  border-radius: 6px;
+  transition: border-color 0.2s;
+}
+
+.phrase-text { flex: 1; font-size: 0.9rem; color: var(--text-primary); line-height: 1.5; font-family: var(--font-mono); }
+.phrase-btns { display: flex; flex-direction: column; gap: 0.4rem; min-width: 140px; }
+
+.phrase-btn {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 1px;
+  padding: 0.4rem 0.6rem;
+  border-radius: 3px;
+  border: 1px solid;
+  cursor: pointer;
+  background: transparent;
+  transition: all 0.15s;
+}
+
+.phrase-btn.fact { color: var(--accent-cyan); border-color: rgba(0,212,255,0.4); }
+.phrase-btn.fact:hover, .phrase-btn.fact.selected { background: rgba(0,212,255,0.2); border-color: var(--accent-cyan); box-shadow: 0 0 8px rgba(0,212,255,0.4); }
+.phrase-btn.value { color: var(--accent-amber); border-color: rgba(255,170,0,0.4); }
+.phrase-btn.value:hover, .phrase-btn.value.selected { background: rgba(255,170,0,0.15); border-color: var(--accent-amber); box-shadow: 0 0 8px rgba(255,170,0,0.4); }
+
+.phrase-item.correct { border-color: var(--accent-green); background: rgba(0,255,136,0.04); }
+.phrase-item.wrong   { border-color: var(--accent-red);   background: rgba(255,51,102,0.04); }
+
+/* Sala 2 Opciones */
+.option-list { list-style: none; }
+.option-item { display: flex; align-items: flex-start; gap: 1rem; padding: 1rem; margin-bottom: 0.7rem; border: 1px solid rgba(0,212,255,0.15); border-radius: 6px; cursor: pointer; transition: all 0.2s; background: rgba(0,212,255,0.02); }
+.option-item:hover { border-color: rgba(0,212,255,0.4); background: rgba(0,212,255,0.06); }
+.option-item.selected { border-color: var(--accent-cyan); background: rgba(0,212,255,0.1); }
+.option-letter { font-family: var(--font-display); font-size: 0.8rem; color: var(--accent-cyan); min-width: 24px; margin-top: 2px; }
+.option-text { font-size: 0.9rem; line-height: 1.6; color: var(--text-secondary); }
+
+.cipher-section { margin-top: 1.2rem; padding-top: 1.2rem; border-top: 1px solid rgba(0,212,255,0.15); }
+.cipher-label { font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 0.8rem; line-height: 1.6; }
+.cipher-word-display { font-family: var(--font-display); font-size: 1.5rem; color: var(--accent-amber); letter-spacing: 8px; text-align: center; margin: 0.8rem 0; text-shadow: 0 0 15px rgba(255,170,0,0.4); }
+
+.code-input-row { display: flex; gap: 0.7rem; align-items: center; flex-wrap: wrap; }
+.code-input { background: var(--bg-deep); border: 1px solid var(--accent-cyan); color: var(--accent-cyan); font-family: var(--font-display); font-size: 1.1rem; letter-spacing: 4px; padding: 0.6rem 1rem; border-radius: 4px; width: 180px; text-transform: uppercase; outline: none; text-align: center; }
+.code-input:focus { box-shadow: var(--glow-cyan); }
+.code-input.correct-input { border-color: var(--accent-green); color: var(--accent-green); box-shadow: var(--glow-green); }
+.code-input.wrong-input { border-color: var(--accent-red); color: var(--accent-red); box-shadow: var(--glow-red); }
+
+/* Sala 3 Argumentos */
+.arguments-grid { display: grid; gap: 0.8rem; }
+.argument-item { display: flex; align-items: flex-start; gap: 0.8rem; padding: 1rem; border: 1px solid rgba(0,212,255,0.15); border-radius: 6px; cursor: pointer; transition: all 0.2s; background: rgba(0,212,255,0.02); }
+.argument-item:hover { border-color: rgba(0,212,255,0.4); background: rgba(0,212,255,0.06); }
+.argument-item.selected { border-color: var(--accent-cyan); background: rgba(0,212,255,0.1); }
+.arg-num { font-family: var(--font-display); font-size: 0.75rem; color: var(--accent-cyan); min-width: 20px; margin-top: 2px; }
+.arg-text { font-size: 0.88rem; line-height: 1.6; color: var(--text-secondary); }
+
+.keyword-section { margin-top: 1.2rem; padding-top: 1.2rem; border-top: 1px solid rgba(0,212,255,0.15); }
+.keyword-clue { font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent-amber); line-height: 1.7; margin-bottom: 1rem; padding: 1rem; border: 1px solid rgba(255,170,0,0.25); border-radius: 4px; background: rgba(255,170,0,0.04); text-align: center; }
+
+/* Alertas */
+.feedback-box { max-width: 800px; width: 100%; padding: 1rem 1.2rem; border-radius: 6px; font-family: var(--font-mono); font-size: 0.82rem; line-height: 1.6; margin-bottom: 1rem; display: none; animation: fadeIn 0.3s ease; }
+.feedback-box.error { display: block; border: 1px solid var(--accent-red); background: rgba(255,51,102,0.08); color: #ff8099; }
+.feedback-box.success { display: block; border: 1px solid var(--accent-green); background: rgba(0,255,136,0.08); color: var(--accent-green); }
+.feedback-box.info { display: block; border: 1px solid var(--accent-amber); background: rgba(255,170,0,0.08); color: var(--accent-amber); }
+.feedback-icon { font-size: 1rem; margin-right: 0.5rem; }
+
+.code-reveal { background: var(--bg-deep); border: 2px solid var(--accent-green); border-radius: 8px; padding: 1.5rem; text-align: center; margin-bottom: 1rem; box-shadow: var(--glow-green); display: none; animation: fadeIn 0.5s ease; }
+.code-reveal.visible { display: block; }
+.code-reveal-label { font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-muted); letter-spacing: 3px; margin-bottom: 0.5rem; }
+.code-reveal-number { font-family: var(--font-display); font-size: 2.5rem; color: var(--accent-green); letter-spacing: 12px; text-shadow: var(--glow-green); }
+
+/* Éxito */
+#screen-success { flex-direction: column; align-items: center; justify-content: center; padding: 2rem; text-align: center; }
+.success-badge { font-family: var(--font-mono); font-size: 0.7rem; color: var(--accent-green); border: 1px solid var(--accent-green); padding: 0.3rem 1rem; letter-spacing: 3px; margin-bottom: 1.5rem; animation: pulse 2s infinite; }
+.success-title { font-family: var(--font-display); font-size: clamp(1.8rem, 5vw, 3rem); color: var(--accent-green); text-shadow: var(--glow-green); margin-bottom: 0.5rem; }
+.success-subtitle { font-family: var(--font-mono); color: var(--text-secondary); margin-bottom: 2rem; font-size: 0.9rem; letter-spacing: 1px; }
+.success-card { background: var(--bg-card); border: 1px solid var(--accent-green); border-radius: 8px; padding: 2rem; max-width: 640px; width: 100%; box-shadow: var(--glow-green); margin-bottom: 1.5rem; }
+.success-card p { font-size: 0.95rem; line-height: 1.8; color: var(--text-secondary); margin-bottom: 1rem; }
+.stats-row { display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; margin-top: 1.2rem; }
+.stat-box { text-align: center; }
+.stat-value { font-family: var(--font-display); font-size: 1.8rem; color: var(--accent-cyan); display: block; }
+.stat-label { font-family: var(--font-mono); font-size: 0.68rem; color: var(--text-muted); letter-spacing: 2px; }
+
+/* Panel Docente Modal */
+.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(5,13,20,0.92); z-index: 1000; align-items: center; justify-content: center; padding: 1rem; }
+.modal-overlay.open { display: flex; animation: fadeIn 0.3s ease; }
+.modal-box { background: var(--bg-panel); border: 1px solid var(--accent-amber); border-radius: 10px; padding: 2rem; max-width: 720px; width: 100%; max-height: 85vh; overflow-y: auto; box-shadow: 0 0 40px rgba(255,170,0,0.2); position: relative; }
+.modal-box h2 { font-family: var(--font-display); font-size: 1.2rem; color: var(--accent-amber); letter-spacing: 3px; margin-bottom: 1.5rem; padding-bottom: 0.8rem; border-bottom: 1px solid rgba(255,170,0,0.25); }
+.modal-close { position: absolute; top: 1rem; right: 1.2rem; background: none; border: none; color: var(--text-muted); font-size: 1.3rem; cursor: pointer; font-family: var(--font-mono); }
+.modal-close:hover { color: var(--accent-red); }
+.modal-section { margin-bottom: 1.5rem; }
+.modal-section h3 { font-family: var(--font-display); font-size: 0.8rem; color: var(--accent-cyan); letter-spacing: 2px; margin-bottom: 0.8rem; text-transform: uppercase; }
+.modal-section p, .modal-section li { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.7; margin-bottom: 0.5rem; }
+.modal-section ul { list-style: disc; padding-left: 1.2rem; }
+.answer-key { background: var(--bg-deep); border: 1px solid rgba(0,212,255,0.2); border-radius: 6px; padding: 1rem; font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-secondary); line-height: 1.8; }
+.answer-key strong { color: var(--accent-green); }
+.answer-key em { color: var(--accent-red); font-style: normal; }
+
+.lock-screen { text-align: center; padding: 1rem 0; }
+.lock-screen .lock-icon-big { font-size: 3rem; margin-bottom: 1rem; }
+.lock-screen p { font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.2rem; }
+.pin-input { background: var(--bg-deep); border: 1px solid var(--accent-amber); color: var(--accent-amber); font-family: var(--font-display); font-size: 1.5rem; letter-spacing: 8px; padding: 0.6rem 1.2rem; border-radius: 4px; width: 160px; text-align: center; outline: none; margin-bottom: 1rem; }
+.pin-input:focus { box-shadow: 0 0 15px rgba(255,170,0,0.4); }
+.pin-error { font-family: var(--font-mono); font-size: 0.78rem; color: var(--accent-red); display: none; margin-bottom: 0.5rem; }
+
+.teacher-btn-fixed { position: fixed; bottom: 1.2rem; right: 1.2rem; z-index: 500; }
+
+.progress-nav { display: flex; gap: 0.5rem; align-items: center; justify-content: center; margin-bottom: 1.5rem; }
+.progress-dot { width: 10px; height: 10px; border-radius: 50%; border: 1px solid var(--text-muted); background: transparent; transition: all 0.3s; }
+.progress-dot.done { background: var(--accent-green); border-color: var(--accent-green); box-shadow: var(--glow-green); }
+.progress-dot.active{ background: var(--accent-cyan); border-color: var(--accent-cyan); box-shadow: var(--glow-cyan); }
+
+.sep { border: none; border-top: 1px solid rgba(0,212,255,0.1); margin: 1rem 0; }
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg-deep); }
+::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: 3px; }
+
+@media (max-width: 600px) {
+  .phrase-item { flex-direction: column; }
+  .phrase-btns { flex-direction: row; min-width: auto; }
+  .code-input-row { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+
+<div class="teacher-btn-fixed">
+  <button class="btn btn-amber" onclick="openTeacherModal()">🔒 PANEL DOCENTE</button>
+</div>
+
+<div id="screen-welcome" class="screen active">
+  <div class="welcome-badge">⬡ PROTOCOLO DE ACCESO INICIADO ⬡</div>
+  <h1 class="welcome-title">LABORATORIO BIOÉTICO</h1>
+  <p class="welcome-subtitle">// TRES DILEMAS //</p>
+
+  <div class="welcome-card">
+    <p>
+      Año 2031. El <strong>SERVIDOR CENTRAL DE BIOÉTICA GLOBAL</strong> ha sido
+      comprometido. Tres salas de contención están selladas por un sistema de
+      seguridad que solo puede desactivarse demostrando razonamiento ético riguroso.
+    </p>
+    <p>
+      Como investigadores atrapados en el núcleo del servidor, deben analizar tres
+      dilemas reales y separar con precisión los <strong>HECHOS CIENTÍFICOS</strong>
+      de las <strong>VALORACIONES ÉTICAS</strong> para desbloquear cada puerta.
+    </p>
+    <ul class="mission-list" id="welcome-mission-list">
+      <li class="unlocked"><span class="lock-icon">🔓</span><span class="room-name">MISIÓN 01 — El Dilema Neuralink</span></li>
+      <li id="ml-2"><span class="lock-icon" id="ml-2-icon">🔒</span><span class="room-name">MISIÓN 02 — El Filtro CRISPR</span></li>
+      <li id="ml-3"><span class="lock-icon" id="ml-3-icon">🔒</span><span class="room-name">MISIÓN 03 — La Balanza de Zolgensma</span></li>
+    </ul>
+  </div>
+
+  <div class="timer-display" id="welcome-timer">⏱ 00:00:00</div>
+  <button class="btn btn-cyan" onclick="startGame()">▶ INICIAR MISIÓN</button>
+</div>
+
+<div id="screen-room1" class="screen room-screen">
+  <div class="room-header">
+    <span class="room-id">SALA-01 / NEURALINK</span>
+    <span class="room-timer-live" id="timer-r1">⏱ 00:00:00</span>
+  </div>
+
+  <h2 class="room-title">⚡ EL DILEMA NEURALINK</h2>
+  <p class="room-principle">// PRINCIPIO: BENEFICENCIA VS. AUTONOMÍA //</p>
+
+  <div class="progress-nav">
+    <div class="progress-dot active"></div>
+    <div class="progress-dot"></div>
+    <div class="progress-dot"></div>
+  </div>
+
+  <div class="case-card">
+    <h3>// BRIEFING DEL CASO //</h3>
+    <p>
+      La empresa NeuraLink ha desarrollado un implante cerebral que <strong>cura la parálisis completa</strong>
+      en pacientes con lesión medular. El chip interpreta señales neuronales y las convierte en comandos digitales,
+      devolviendo movilidad y comunicación. Sin embargo, el implante <strong>recopila datos neurológicos de por vida</strong>,
+      incluyendo patrones de pensamiento, emociones y estados cognitivos, que son almacenados en servidores
+      privados de la empresa. Los pacientes firman un contrato de cesión de datos como condición de acceso.
+    </p>
+  </div>
+
+  <div class="challenge-panel">
+    <h3>🔐 DESAFÍO — CLASIFICACIÓN DE ENUNCIADOS</h3>
+    <p style="font-family:var(--font-mono);font-size:0.78rem;color:var(--text-muted);margin-bottom:1rem;">
+      Clasifica cada enunciado como <span style="color:var(--accent-cyan)">HECHO CIENTÍFICO</span>
+      o <span style="color:var(--accent-amber)">VALORACIÓN ÉTICA</span>. Debes acertar los 7 para revelar el código.
+    </p>
+
+    <div id="phrases-container">
+      <div class="phrase-item" data-answer="fact" data-idx="0">
+        <span class="phrase-text">A. "El implante traduce señales neuronales en comandos digitales con una precisión del 94%."</span>
+        <div class="phrase-btns">
+          <button class="phrase-btn fact" onclick="selectPhrase(0,'fact',this)">⬡ HECHO CIENTÍFICO</button>
+          <button class="phrase-btn value" onclick="selectPhrase(0,'value',this)">◈ VALORACIÓN ÉTICA</button>
+        </div>
+      </div>
+
+      <div class="phrase-item" data-answer="value" data-idx="1">
+        <span class="phrase-text">B. "Es inaceptable que una empresa privada comercialice con los pensamientos de sus pacientes."</span>
+        <div class="phrase-btns">
+          <button class="phrase-btn fact" onclick="selectPhrase(1,'fact',this)">⬡ HECHO CIENTÍFICO</button>
+          <button class="phrase-btn value" onclick="selectPhrase(1,'value',this)">◈ VALORACIÓN ÉTICA</button>
+        </div>
+      </div>
+
+      <div class="phrase-item" data-answer="fact" data-idx="2">
+        <span class="phrase-text">C. "La tecnología devuelve la voz y la movilidad a pacientes con parálisis total."</span>
+        <div class="phrase-btns">
+          <button class="phrase-btn fact" onclick="selectPhrase(2,'fact',this)">⬡ HECHO CIENTÍFICO</button>
+          <button class="phrase-btn value" onclick="selectPhrase(2,'value',this)">◈ VALORACIÓN ÉTICA</button>
+        </div>
+      </div>
+
+      <div class="phrase-item" data-answer="value" data-idx="3">
+        <span class="phrase-text">D. "Un paciente que cede sus datos cerebrales por curación no está tomando una decisión verdaderamente libre."</span>
+        <div class="phrase-btns">
+          <button class="phrase-btn fact" onclick="selectPhrase(3,'fact',this)">⬡ HECHO CIENTÍFICO</button>
+          <button class="phrase-btn value" onclick="selectPhrase(3,'value',this)">◈ VALORACIÓN ÉTICA</button>
+        </div>
+      </div>
+
+      <div class="phrase-item" data-answer="fact" data-idx="4">
+        <span class="phrase-text">E. "Los datos recopilados incluyen patrones de sueño, estados emocionales y actividad cognitiva en tiempo real."</span>
+        <div class="phrase-btns">
+          <button class="phrase-btn fact" onclick="selectPhrase(4,'fact',this)">⬡ HECHO CIENTÍFICO</button>
+          <button class="phrase-btn value" onclick="selectPhrase(4,'value',this)">◈ VALORACIÓN ÉTICA</button>
+        </div>
+      </div>
+
+      <div class="phrase-item" data-answer="value" data-idx="5">
+        <span class="phrase-text">F. "El beneficio médico del implante justifica éticamente ceder la privacidad cerebral."</span>
+        <div class="phrase-btns">
+          <button class="phrase-btn fact" onclick="selectPhrase(5,'fact',this)">⬡ HECHO CIENTÍFICO</button>
+          <button class="phrase-btn value" onclick="selectPhrase(5,'value',this)">◈ VALORACIÓN ÉTICA</button>
+        </div>
+      </div>
+
+      <div class="phrase-item" data-answer="fact" data-idx="6">
+        <span class="phrase-text">G. "El contrato de cesión de datos fue firmado por el 100% de los 42 pacientes del ensayo clínico inicial."</span>
+        <div class="phrase-btns">
+          <button class="phrase-btn fact" onclick="selectPhrase(6,'fact',this)">⬡ HECHO CIENTÍFICO</button>
+          <button class="phrase-btn value" onclick="selectPhrase(6,'value',this)">◈ VALORACIÓN ÉTICA</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="feedback-box" id="feedback-r1"></div>
+
+  <div class="code-reveal" id="code-r1">
+    <div class="code-reveal-label">// CÓDIGO DE ACCESO DESBLOQUEADO //</div>
+    <div class="code-reveal-number" id="code-r1-number">7 4 2 1</div>
+    <p style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-muted);margin-top:0.5rem;">
+      ¡Clasificación perfecta! Separaste el dato científico de la valoración moral. La puerta se abre.
+    </p>
+  </div>
+
+  <button class="btn btn-cyan" onclick="validateRoom1()" id="btn-check-r1" style="margin-bottom:0.8rem;">
+    ▶ VERIFICAR CLASIFICACIÓN
+  </button>
+  <button class="btn btn-green" id="btn-advance-r1" style="display:none" onclick="goToRoom(2)">
+    ▶▶ ACCEDER A SALA 02
+  </button>
+</div>
+
+<div id="screen-room2" class="screen room-screen">
+  <div class="room-header">
+    <span class="room-id">SALA-02 / CRISPR</span>
+    <span class="room-timer-live" id="timer-r2">⏱ 00:00:00</span>
+  </div>
+
+  <h2 class="room-title">🧬 EL FILTRO CRISPR</h2>
+  <p class="room-principle">// PRINCIPIO: NO MALEFICENCIA //</p>
+
+  <div class="progress-nav">
+    <div class="progress-dot done"></div>
+    <div class="progress-dot active"></div>
+    <div class="progress-dot"></div>
+  </div>
+
+  <div class="case-card">
+    <h3>// BRIEFING DEL CASO //</h3>
+    <p>
+      El Laboratorio GenEx ha estado editando genéticamente embriones humanos en secreto durante 3 años,
+      buscando crear individuos con mayor resistencia a enfermedades, mayor inteligencia y longevidad superior.
+      El sistema de contención biológica está <strong>colapsando</strong>: mutaciones inesperadas en cadenas
+      secundarias podrían propagarse a la línea germinal de toda la especie. Tienes acceso al
+      <strong>panel de control del filtro genético</strong> y debes aplicar el principio bioético correcto
+      para estabilizar el sistema.
+    </p>
+  </div>
+
+  <div class="challenge-panel">
+    <h3>🔐 DESAFÍO — APLICA EL PRINCIPIO CORRECTO</h3>
+    <p style="font-family:var(--font-mono);font-size:0.78rem;color:var(--text-muted);margin-bottom:1rem;">
+      ¿Cuál es la acción que aplica estrictamente el principio de <span style="color:var(--accent-cyan)">NO MALEFICENCIA</span>
+      ante la incertidumbre biológica? Selecciona la opción correcta.
+    </p>
+
+    <ul class="option-list" id="options-r2">
+      <li class="option-item" onclick="selectOption2(this,'A')">
+        <span class="option-letter">A</span>
+        <span class="option-text">
+          Continuar los experimentos a velocidad reducida, ya que los beneficios para la humanidad
+          a largo plazo superan los riesgos actuales y detenerlos sería desperdiciar años de investigación.
+        </span>
+      </li>
+      <li class="option-item" data-correct="true" onclick="selectOption2(this,'B')">
+        <span class="option-letter">B</span>
+        <span class="option-text">
+          Detener completamente todos los experimentos, activar los protocolos de contención y no
+          reanudar hasta alcanzar riesgo cero demostrado, aunque eso paralice años de trabajo.
+        </span>
+      </li>
+      <li class="option-item" onclick="selectOption2(this,'C')">
+        <span class="option-letter">C</span>
+        <span class="option-text">
+          Publicar los resultados parciales para que la comunidad científica internacional
+          decida, redistribuyendo la responsabilidad de los riesgos entre todos.
+        </span>
+      </li>
+      <li class="option-item" onclick="selectOption2(this,'D')">
+        <span class="option-letter">D</span>
+        <span class="option-text">
+          Acelerar la fase final para obtener un resultado concluyente antes de que el colapso
+          se propague, apostando por que el éxito justificará los riesgos asumidos.
+        </span>
+      </li>
+    </ul>
+
+    <div class="cipher-section" id="cipher-section-r2" style="display:none">
+      <p class="cipher-label">
+        ✅ <strong style="color:var(--accent-green)">FILTRO ESTABILIZADO.</strong> Has aplicado correctamente el principio de No Maleficencia.
+        El sistema te entrega la palabra clave:<br><br>
+        <strong style="color:var(--accent-amber)">Esta palabra ha sido cifrada con el Código César (desplazamiento = 3).</strong><br>
+        En el Código César, cada letra se desplaza 3 posiciones hacia atrás en el alfabeto.
+        Por ejemplo: <code>F → C</code>, <code>U → R</code>. Descifra la palabra y escríbela para abrir la puerta.
+      </p>
+      <div class="cipher-word-display" id="cipher-word">F U L V S U</div>
+      <div class="code-input-row" style="justify-content:center">
+        <input type="text" class="code-input" id="cipher-answer-r2"
+               maxlength="6" placeholder="??????"
+               oninput="this.value=this.value.toUpperCase()"
+               onkeydown="if(event.key==='Enter')validateCipher()">
+        <button class="btn btn-cyan" onclick="validateCipher()">DESCIFRAR</button>
+      </div>
+    </div>
+
+    <div class="cipher-section" id="wrong-code-section" style="display:none">
+      <p class="cipher-label" style="color:var(--accent-red)">
+        ⚠ DECISIÓN INCORRECTA. El sistema genera el código de error: <strong style="color:var(--accent-red)">CRISPA</strong>.<br>
+        Ante la incertidumbre y el riesgo de daño irreversible, la ética exige DETENER, no optimizar ni redistribuir.
+        Intenta de nuevo seleccionando la opción que aplica "Primero, no dañar".
+      </p>
+    </div>
+  </div>
+
+  <div class="feedback-box" id="feedback-r2"></div>
+
+  <button class="btn btn-cyan" id="btn-check-r2" onclick="validateRoom2()" style="margin-bottom:0.8rem;">
+    ▶ VERIFICAR OPCIÓN
+  </button>
+  <button class="btn btn-green" id="btn-advance-r2" style="display:none" onclick="goToRoom(3)">
+    ▶▶ ACCEDER A SALA 03
+  </button>
+</div>
+
+<div id="screen-room3" class="screen room-screen">
+  <div class="room-header">
+    <span class="room-id">SALA-03 / ZOLGENSMA</span>
+    <span class="room-timer-live" id="timer-r3">⏱ 00:00:00</span>
+  </div>
+
+  <h2 class="room-title">⚖ LA BALANZA DE ZOLGENSMA</h2>
+  <p class="room-principle">// PRINCIPIO: JUSTICIA DISTRIBUTIVA //</p>
+
+  <div class="progress-nav">
+    <div class="progress-dot done"></div>
+    <div class="progress-dot done"></div>
+    <div class="progress-dot active"></div>
+  </div>
+
+  <div class="case-card">
+    <h3>// BRIEFING DEL CASO //</h3>
+    <p>
+      Zolgensma es la terapia génica más cara del mundo: <strong>2,1 millones de dólares por dosis única</strong>.
+      Cura la Atrofia Muscular Espinal (AME) tipo 1 en bebés, una enfermedad fatal sin tratamiento.
+      El hospital ha recibido una donación para una sola dosis. En lista de espera hay <strong>5 bebés</strong>,
+      todos con AME tipo 1 grave. El comité de bioética debe decidir el criterio de asignación.
+      El interruptor de escape solo se activa con el argumento éticamente correcto.
+    </p>
+  </div>
+
+  <div class="challenge-panel">
+    <h3>🔐 DESAFÍO — SELECCIONA EL ARGUMENTO ÉTICAMENTE CORRECTO</h3>
+    <p style="font-family:var(--font-mono);font-size:0.78rem;color:var(--text-muted);margin-bottom:1rem;">
+      ¿Cuál argumento define correctamente la <span style="color:var(--accent-cyan)">JUSTICIA DISTRIBUTIVA</span>
+      en la asignación de recursos médicos escasos?
+    </p>
+
+    <div class="arguments-grid" id="args-r3">
+      <div class="argument-item" onclick="selectArg3(this,'A')">
+        <span class="arg-num">A</span>
+        <span class="arg-text">
+          Debe priorizarse el bebé cuya familia pueda cofinanciar parte del tratamiento,
+          ya que eso garantiza sostenibilidad del sistema de salud y maximiza el retorno social de la inversión.
+        </span>
+      </li>
+
+      <div class="argument-item" data-correct="true" onclick="selectArg3(this,'B')">
+        <span class="arg-num">B</span>
+        <span class="arg-text">
+          Debe establecerse un criterio clínico objetivo y transparente —como la ventana terapéutica más estrecha
+          o la mayor probabilidad de éxito demostrada— aplicado igualmente a todos, sin distinción de origen,
+          riqueza o influencia familiar.
+        </span>
+      </div>
+
+      <div class="argument-item" onclick="selectArg3(this,'C')">
+        <span class="arg-num">C</span>
+        <span class="arg-text">
+          El bebé cuyo caso tenga mayor repercusión mediática debe recibir el tratamiento, pues eso
+          genera conciencia social, atrae más donaciones y salva más vidas a largo plazo.
+        </span>
+      </div>
+
+      <div class="argument-item" onclick="selectArg3(this,'D')">
+        <span class="arg-num">D</span>
+        <span class="arg-text">
+          Ningún criterio puede ser éticamente superior a otro, por lo que debe decidirse mediante
+          sorto aleatorio para garantizar la imparcialidad absoluta del proceso.
+        </span>
+      </div>
+    </div>
+
+    <div class="keyword-section" id="keyword-section-r3" style="display:none">
+      <div class="keyword-clue">
+        🔑 <strong style="color:var(--accent-amber)">INTERRUPTOR ACTIVADO — ÚLTIMO CANDADO:</strong><br><br>
+        La clave para terminar la misión está en un hecho ocurrido en 1947.
+      </div>
+      <div class="code-input-row" style="justify-content:center">
+        <input type="text" class="code-input" id="keyword-answer-r3"
+               maxlength="15" placeholder="CÓDIGO"
+               style="width:220px;letter-spacing:2px;font-size:0.9rem"
+               onkeydown="if(event.key==='Enter')validateKeyword()">
+        <button class="btn btn-green" onclick="validateKeyword()">ACTIVAR ESCAPE</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="feedback-box" id="feedback-r3"></div>
+
+  <button class="btn btn-cyan" id="btn-check-r3" onclick="validateRoom3()" style="margin-bottom:0.8rem;">
+    ▶ VERIFICAR ARGUMENTO
+  </button>
+</div>
+
+<div id="screen-success" class="screen">
+  <div class="success-badge">⬡ SERVIDOR CENTRAL LIBERADO ⬡</div>
+  <h1 class="success-title">ESCAPE COMPLETADO</h1>
+  <p class="success-subtitle">// MISIÓN CUMPLIDA — LABORATORIO BIOÉTICO ASEGURADO //</p>
+
+  <div class="success-card">
+    <p>
+      Has demostrado que la ciencia y la moral hablan lenguajes distintos — y que solo quien
+      distingue el <strong>dato verificable</strong> del <strong>juicio de valor</strong>
+      puede tomar decisiones que protejan la dignidad humana.
+    </p>
+    <p>
+      Aplicaste <span style="color:var(--accent-cyan)">BENEFICENCIA</span> sin borrar la
+      <span style="color:var(--accent-amber)">AUTONOMÍA</span>, detuviste el daño antes
+      de que ocurriera (<span style="color:var(--accent-green)">NO MALEFICENCIA</span>),
+      y asignaste recursos con criterios de
+      <span style="color:var(--accent-red)">JUSTICIA</span> transparente y objetiva.
+    </p>
+    <hr class="sep">
+    <div class="stats-row">
+      <div class="stat-box">
+        <span class="stat-value" id="final-time">00:00:00</span>
+        <span class="stat-label">TIEMPO TOTAL</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-value">3 / 3</span>
+        <span class="stat-label">SALAS COMPLETADAS</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-value">100%</span>
+        <span class="stat-label">BIOÉTICA APLICADA</span>
+      </div>
+    </div>
+  </div>
+
+  <button class="btn btn-cyan" onclick="restartGame()">↺ REINICIAR MISIÓN</button>
+</div>
+
+<div class="modal-overlay" id="teacher-modal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeTeacherModal()">✕</button>
+
+    <div id="teacher-lock-screen" class="lock-screen">
+      <div class="lock-icon-big">🔒</div>
+      <h2 style="font-family:var(--font-display);font-size:1.1rem;color:var(--accent-amber);letter-spacing:3px;margin-bottom:1rem;">
+        PANEL DOCENTE RESTRINGIDO
+      </h2>
+      <p>Ingresa el código de acceso docente (4 dígitos):</p>
+      <br>
+      <input type="password" class="pin-input" id="teacher-pin" maxlength="4" placeholder="····"
+             oninput="checkTeacherPin()" onkeydown="if(event.key==='Enter')checkTeacherPin()">
+      <div class="pin-error" id="pin-error">⚠ Código incorrecto. Intenta de nuevo.</div>
+      <button class="btn btn-amber" onclick="checkTeacherPin()">ACCEDER</button>
+    </div>
+
+    <div id="teacher-content" style="display:none">
+      <h2>📋 PANEL DOCENTE — LABORATORIO BIOÉTICO</h2>
+
+      <div class="modal-section">
+        <h3>Descripción General</h3>
+        <p>
+          "Laboratorio Bioético: Tres Dilemas" es un Digital Escape Room diseñado para estudiantes de
+          14 años. Su objetivo es desarrollar la capacidad de distinguir entre <strong>hechos científicos</strong>
+          y <strong>valoraciones éticas</strong>, aplicando los cuatro principios de la bioética principialista.
+        </p>
+      </div>
+
+      <div class="modal-section">
+        <h3>Clave de Respuestas Correctas</h3>
+        <div class="answer-key">
+          <strong>SALA 1 — Neuralink (Clasificación):</strong><br>
+          A → <strong>HECHO</strong> | B → <strong>VALOR</strong> | C → <strong>HECHO</strong><br>
+          D → <strong>VALOR</strong> | E → <strong>HECHO</strong> | F → <strong>VALOR</strong> | G → <strong>HECHO</strong><br>
+          Código numérico revelado: <strong>7 4 2 1</strong><br><br>
+
+          <strong>SALA 2 — CRISPR (Opción múltiple + César):</strong><br>
+          Opción correcta: <strong>B</strong> — Detener completamente los experimentos.<br>
+          Palabra cifrada (César +3): <strong>FULVSU → CRISPR</strong><br><br>
+
+          <strong>SALA 3 — Zolgensma (Argumento + Keyword):</strong><br>
+          Argumento correcto: <strong>B</strong> — Criterio clínico objetivo e igualitario.<br>
+          Palabra clave final oculta: <strong>Núremberg</strong> (Se infiere buscando "1947 Bioética")
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const gameState = {
+  room1Complete: false,
+  room2Complete: false,
+  room3Complete: false,
+  startTime: null,
+  timerInterval: null,
+  r1Selections: {},
+  r2SelectedOption: null,
+  r2CorrectChosen: false,
+  r3SelectedArg: null,
+  r3CorrectChosen: false,
+};
+
+function formatTime(ms) {
+  const s = Math.floor(ms / 1000);
+  const h = Math.floor(s / 3600);
+  const m = Math.floor((s % 3600) / 60);
+  const sec = s % 60;
+  return [h, m, sec].map(v => String(v).padStart(2,'0')).join(':');
+}
+
+function startTimer() {
+  gameState.startTime = Date.now();
+  gameState.timerInterval = setInterval(() => {
+    const elapsed = Date.now() - gameState.startTime;
+    const fmt = '⏱ ' + formatTime(elapsed);
+    ['timer-r1','timer-r2','timer-r3'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = fmt;
+    });
+    const wt = document.getElementById('welcome-timer');
+    if (wt) wt.textContent = fmt;
+  }, 1000);
+}
+
+function stopTimer() {
+  clearInterval(gameState.timerInterval);
+  return formatTime(Date.now() - gameState.startTime);
+}
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function startGame() {
+  startTimer();
+  showScreen('screen-room1');
+}
+
+function goToRoom(n) {
+  if (n === 2 && !gameState.room1Complete) return;
+  if (n === 3 && !gameState.room2Complete) return;
+  showScreen('screen-room' + n);
+}
+
+function restartGame() {
+  gameState.room1Complete = false;
+  gameState.room2Complete = false;
+  gameState.room3Complete = false;
+  gameState.r1Selections = {};
+  gameState.r2SelectedOption = null;
+  gameState.r2CorrectChosen = false;
+  gameState.r3SelectedArg = null;
+  gameState.r3CorrectChosen = false;
+
+  document.querySelectorAll('.phrase-item').forEach(item => item.classList.remove('correct','wrong'));
+  document.querySelectorAll('.phrase-btn').forEach(btn => btn.classList.remove('selected'));
+  hideEl('code-r1');
+  hideEl('btn-advance-r1');
+  showEl('btn-check-r1');
+  clearFeedback('feedback-r1');
+
+  document.querySelectorAll('#options-r2 .option-item').forEach(o => o.classList.remove('selected'));
+  hideEl('cipher-section-r2');
+  hideEl('wrong-code-section');
+  document.getElementById('cipher-answer-r2').value = '';
+  document.getElementById('cipher-answer-r2').className = 'code-input';
+  clearFeedback('feedback-r2');
+  hideEl('btn-advance-r2');
+  showEl('btn-check-r2');
+
+  document.querySelectorAll('#args-r3 .argument-item').forEach(a => a.classList.remove('selected'));
+  hideEl('keyword-section-r3');
+  document.getElementById('keyword-answer-r3').value = '';
+  document.getElementById('keyword-answer-r3').className = 'code-input';
+  clearFeedback('feedback-r3');
+  showEl('btn-check-r3');
+
+  document.getElementById('ml-2-icon').textContent = '🔒';
+  document.getElementById('ml-3-icon').textContent = '🔒';
+
+  stopTimer();
+  startTimer();
+  showScreen('screen-room1');
+}
+
+function showEl(id) { const el = document.getElementById(id); if(el) el.style.display = ''; }
+function hideEl(id) { const el = document.getElementById(id); if(el) el.style.display = 'none'; }
+function clearFeedback(id) { const el = document.getElementById(id); if(el){ el.className='feedback-box'; el.textContent=''; } }
+
+function showFeedback(id, type, html) {
+  const el = document.getElementById(id);
+  el.className = 'feedback-box ' + type;
+  el.innerHTML = html;
+}
+
+// SALA 1
+function selectPhrase(idx, choice, btn) {
+  const item = btn.closest('.phrase-item');
+  item.querySelectorAll('.phrase-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  gameState.r1Selections[idx] = choice;
+  item.classList.remove('correct','wrong');
+  clearFeedback('feedback-r1');
+  hideEl('code-r1');
+}
+
+function validateRoom1() {
+  const items = document.querySelectorAll('#phrases-container .phrase-item');
+  let allSelected = true;
+  let allCorrect = true;
+  const errors = [];
+
+  items.forEach((item, idx) => {
+    const correct = item.dataset.answer;
+    const chosen  = gameState.r1Selections[idx];
+    if (!chosen) { allSelected = false; return; }
+
+    if (chosen === correct) {
+      item.classList.add('correct');
+    } else {
+      item.classList.add('wrong');
+      allCorrect = false;
+      errors.push(idx + 1);
+    }
+  });
+
+  if (!allSelected) {
+    showFeedback('feedback-r1','error','<span class="feedback-icon">⚠</span> Clasifica los 7 enunciados antes de verificar.');
+    return;
+  }
+
+  if (!allCorrect) {
+    showFeedback('feedback-r1','error','<span class="feedback-icon">⚠</span> Error en los enunciados marcados en rojo. Recuerda: los hechos se verifican empíricamente; los valores expresan juicios o deberes.');
+    return;
+  }
+
+  clearFeedback('feedback-r1');
+  document.getElementById('code-r1').classList.add('visible');
+  document.getElementById('btn-check-r1').style.display = 'none';
+  showEl('btn-advance-r1');
+  gameState.room1Complete = true;
+  document.getElementById('ml-2-icon').textContent = '🔓';
+}
+
+// SALA 2
+function selectOption2(el, letter) {
+  document.querySelectorAll('#options-r2 .option-item').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  gameState.r2SelectedOption = letter;
+  gameState.r2CorrectChosen = el.dataset.correct === 'true';
+  hideEl('cipher-section-r2');
+  hideEl('wrong-code-section');
+  clearFeedback('feedback-r2');
+}
+
+function validateRoom2() {
+  if (!gameState.r2SelectedOption) {
+    showFeedback('feedback-r2','error','<span class="feedback-icon">⚠</span> Selecciona una opción.');
+    return;
+  }
+  if (!gameState.r2CorrectChosen) {
+    document.getElementById('wrong-code-section').style.display = 'block';
+    return;
+  }
+  document.getElementById('cipher-section-r2').style.display = 'block';
+}
+
+function validateCipher() {
+  const input = document.getElementById('cipher-answer-r2').value.trim().toUpperCase();
+  if (input === 'CRISPR') {
+    document.getElementById('cipher-answer-r2').className = 'code-input correct-input';
+    showFeedback('feedback-r2','success','✅ ¡Filtro genético estabilizado con éxito!');
+    document.getElementById('btn-check-r2').style.display = 'none';
+    showEl('btn-advance-r2');
+    gameState.room2Complete = true;
+    document.getElementById('ml-3-icon').textContent = '🔓';
+  } else {
+    document.getElementById('cipher-answer-r2').className = 'code-input wrong-input';
+    showFeedback('feedback-r2','error','<span class="feedback-icon">⚠</span> Transmisión corrupta. Revisa el desplazamiento del Código César.');
+    setTimeout(() => document.getElementById('cipher-answer-r2').className = 'code-input', 1500);
+  }
+}
+
+// SALA 3 (Modificada sin pistas del nombre de la ciudad)
+function selectArg3(el, letter) {
+  document.querySelectorAll('#args-r3 .argument-item').forEach(a => a.classList.remove('selected'));
+  el.classList.add('selected');
+  gameState.r3SelectedArg = letter;
+  gameState.r3CorrectChosen = el.dataset.correct === 'true';
+  hideEl('keyword-section-r3');
+  clearFeedback('feedback-r3');
+}
+
+function validateRoom3() {
+  if (!gameState.r3SelectedArg) {
+    showFeedback('feedback-r3','error','<span class="feedback-icon">⚠</span> Selecciona un argumento.');
+    return;
+  }
+  if (!gameState.r3CorrectChosen) {
+    showFeedback('feedback-r3','error','<span class="feedback-icon">⚠</span> Argumento rechazado por la balanza de equidad. Modifica tu decisión.');
+    return;
+  }
+  document.getElementById('keyword-section-r3').style.display = 'block';
+  clearFeedback('feedback-r3');
+}
+
+function validateKeyword() {
+  const raw = document.getElementById('keyword-answer-r3').value.trim();
+  const correct = ['Núremberg', 'Nuremberg', 'NÚREMBERG', 'NUREMBERG', 'núremberg', 'nuremberg'];
+  
+  if (correct.some(c => c.toLowerCase() === raw.toLowerCase())) {
+    document.getElementById('keyword-answer-r3').className = 'code-input correct-input';
+    showFeedback('feedback-r3','success','✅ Sistema liberado por completo.');
+    setTimeout(() => {
+      document.getElementById('final-time').textContent = stopTimer();
+      gameState.room3Complete = true;
+      showScreen('screen-success');
+    }, 1500);
+  } else {
+    document.getElementById('keyword-answer-r3').className = 'code-input wrong-input';
+    showFeedback('feedback-r3','error','<span class="feedback-icon">⚠</span> Código incorrecto. El sistema permanece bloqueado.');
+    setTimeout(() => document.getElementById('keyword-answer-r3').className = 'code-input', 1500);
+  }
+}
+
+// PANEL DOCENTE
+function openTeacherModal() {
+  document.getElementById('teacher-modal').classList.add('open');
+  document.getElementById('teacher-content').style.display = 'none';
+  document.getElementById('teacher-lock-screen').style.display = 'block';
+  document.getElementById('teacher-pin').value = '';
+  document.getElementById('pin-error').style.display = 'none';
+}
+function closeTeacherModal() { document.getElementById('teacher-modal').classList.remove('open'); }
+function checkTeacherPin() {
+  if (document.getElementById('teacher-pin').value === '1947') {
+    document.getElementById('teacher-lock-screen').style.display = 'none';
+    document.getElementById('teacher-content').style.display = 'block';
+  } else if (document.getElementById('teacher-pin').value.length === 4) {
+    document.getElementById('pin-error').style.display = 'block';
+    document.getElementById('teacher-pin').value = '';
+  }
+}
+document.getElementById('teacher-modal').addEventListener('click', function(e) { if (e.target === this) closeTeacherModal(); });
+</script>
+</body>
+</html>
